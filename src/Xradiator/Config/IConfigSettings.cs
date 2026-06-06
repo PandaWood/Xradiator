@@ -11,11 +11,7 @@ namespace Xradiator.Config
 		TimeSpan PollFrequencyTimeSpan { get; }
 		string BrokenBuildSound { get; set; }
 		string FixedBuildSound { get; set; }
-		string BrokenBuildText { get; set; }
-		string FixedBuildText { get; set; }
 		bool PlaySounds { get; set; }
-		bool PlaySpeech { get; set; }
-		string SpeechVoiceName { get; set; }
 		bool ShowProgress { get; set; }
 		IDictionary<string, string> UsernameMap { get; }
 		GuiltStrategyType BreakerGuiltStrategy { get; }

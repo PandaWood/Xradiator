@@ -37,12 +37,8 @@ namespace Xradiator.Config
 			ShowCountdown = config.GetBoolProperty(ShowCountdownKey);
 			ShowProgress = config.GetBoolProperty(ShowProgressKey);
 			PlaySounds = config.GetBoolProperty(PlaySoundsKey);
-			PlaySpeech = config.GetBoolProperty(PlaySpeechKey);
 			BrokenBuildSound = config.GetProperty(BrokenBuildSoundKey).Value;
 			FixedBuildSound = config.GetProperty(FixedBuildSoundKey).Value;
-			BrokenBuildText = config.GetProperty(BrokenBuildTextKey).Value;
-			FixedBuildText = config.GetProperty(FixedBuildTextKey).Value;
-			SpeechVoiceName = config.GetProperty(SpeechVoiceNameKey).Value;
 			_breakerGuiltStrategy = config.GetProperty(BreakerGuiltStrategyKey).Value;
 
 			_usernameMap = _userNameMappingReader.Read();
@@ -75,12 +71,8 @@ namespace Xradiator.Config
 				config.AppSettings.Settings[ShowCountdownKey].Value = ShowCountdown.ToString();
 				config.AppSettings.Settings[ShowProgressKey].Value = ShowProgress.ToString();
 				config.AppSettings.Settings[PlaySoundsKey].Value = PlaySounds.ToString();
-				config.AppSettings.Settings[PlaySpeechKey].Value = PlaySpeech.ToString();
 				config.AppSettings.Settings[BrokenBuildSoundKey].Value = BrokenBuildSound;
 				config.AppSettings.Settings[FixedBuildSoundKey].Value = FixedBuildSound;
-				config.AppSettings.Settings[BrokenBuildTextKey].Value = BrokenBuildText;
-				config.AppSettings.Settings[FixedBuildTextKey].Value = FixedBuildText;
-				config.AppSettings.Settings[SpeechVoiceNameKey].Value = SpeechVoiceName;
 				config.AppSettings.Settings[BreakerGuiltStrategyKey].Value = _breakerGuiltStrategy;
 				config.Save(ConfigurationSaveMode.Minimal);
 			}
@@ -154,11 +146,11 @@ namespace Xradiator.Config
 		public override string ToString()
 		{
 			if (IsOneView)
-				return string.Format("Url={0}, SkinName={1}, PollFrequency={2}, ProjectNameRegEx={3}, ShowCountdown={4}, ShowCountdown={5}, PlaySounds={6}, PlaySpeech={7}, BrokenBuildSound={8}, BrokenBuildText={9}, FixedBuildSound={10}, FixedBuildText={11}, SpeechVoiceName={12}, CategoryRegEx={13}, BreakerGuiltStrategy={14}",
-					_url, _skinName, _pollFrequency, _projectNameRegEx, _showCountdown, _showProgress, _playSounds, _playSpeech, _brokenBuildSound, _brokenBuildText, _fixedBuildSound, _fixedBuildText, _speechVoiceName, _categoryRegEx, _breakerGuiltStrategy);
+				return string.Format("Url={0}, SkinName={1}, PollFrequency={2}, ProjectNameRegEx={3}, ShowCountdown={4}, ShowProgress={5}, PlaySounds={6}, BrokenBuildSound={7}, FixedBuildSound={8}, CategoryRegEx={9}, BreakerGuiltStrategy={10}",
+					_url, _skinName, _pollFrequency, _projectNameRegEx, _showCountdown, _showProgress, _playSounds, _brokenBuildSound, _fixedBuildSound, _categoryRegEx, _breakerGuiltStrategy);
 
-			return string.Format("PollFrequency={0}, ShowCountdown={1}, ShowProgress={2}, BrokenBuildSound={3}, FixedBuildSound={4}, BrokenBuildText={5}, FixedBuildText={6}, PlaySounds={7}, PlaySpeech={8}, SpeechVoiceName={9}, BreakerGuiltStrategy={10}",
-					_pollFrequency, _showCountdown, _showProgress, _brokenBuildSound, _fixedBuildSound, _brokenBuildText, _fixedBuildText, _playSounds, _playSpeech, _speechVoiceName, _breakerGuiltStrategy);
+			return string.Format("PollFrequency={0}, ShowCountdown={1}, ShowProgress={2}, BrokenBuildSound={3}, FixedBuildSound={4}, PlaySounds={5}, BreakerGuiltStrategy={6}",
+				_pollFrequency, _showCountdown, _showProgress, _brokenBuildSound, _fixedBuildSound, _playSounds, _breakerGuiltStrategy);
 		}
 
 
@@ -229,30 +221,6 @@ namespace Xradiator.Config
 			}
 		}
 
-		private string _brokenBuildText;
-		public string BrokenBuildText
-		{
-			get { return _brokenBuildText; }
-			set
-			{
-				if (_brokenBuildText == value) return;
-				_brokenBuildText = value;
-				Notify("BrokenBuildText");
-			}
-		}
-
-		private string _fixedBuildText;
-		public string FixedBuildText
-		{
-			get { return _fixedBuildText; }
-			set
-			{
-				if (_fixedBuildText == value) return;
-				_fixedBuildText = value;
-				Notify("FixedBuildText");
-			}
-		}
-
 		private bool _playSounds;
 		public bool PlaySounds
 		{
@@ -262,30 +230,6 @@ namespace Xradiator.Config
 				if (_playSounds == value) return;
 				_playSounds = value;
 				Notify("PlaySounds");
-			}
-		}
-
-		private bool _playSpeech;
-		public bool PlaySpeech
-		{
-			get { return _playSpeech; }
-			set
-			{
-				if (_playSpeech == value) return;
-				_playSpeech = value;
-				Notify("PlaySpeech");
-			}
-		}
-
-		private string _speechVoiceName;
-		public string SpeechVoiceName
-		{
-			get { return _speechVoiceName; }
-			set
-			{
-				if (_speechVoiceName == value) return;
-				_speechVoiceName = value;
-				Notify("SpeechVoiceName");
 			}
 		}
 
@@ -321,10 +265,6 @@ namespace Xradiator.Config
 		const string PlaySoundsKey = "PlaySounds";
 		const string BrokenBuildSoundKey = "BrokenBuildSound";
 		const string FixedBuildSoundKey = "FixedBuildSound";
-		const string BrokenBuildTextKey = "BrokenBuildText";
-		const string FixedBuildTextKey = "FixedBuildText";
-		const string PlaySpeechKey = "PlaySpeech";
-		const string SpeechVoiceNameKey = "SpeechVoiceName";
 		const string BreakerGuiltStrategyKey = "BreakerGuiltStrategy";
 	}
 
