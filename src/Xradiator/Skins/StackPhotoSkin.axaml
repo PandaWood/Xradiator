@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:Xradiator.Converters;assembly=Xradiator">
+
+    <conv:StateToBackgroundConverter x:Key="StateToBackground" />
+
+    <ItemsPanelTemplate x:Key="SkinItemsPanel">
+        <UniformGrid Columns="1" />
+    </ItemsPanelTemplate>
+
+    <DataTemplate x:Key="SkinTemplate">
+        <Border BorderBrush="Black" BorderThickness="0.5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="{Binding CurrentState, Converter={StaticResource StateToBackground}}">
+            <Grid RowDefinitions="*,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
+                    <Image Grid.Column="0" Stretch="Uniform" VerticalAlignment="Center"
+                           Source="{Binding BreakerImage}"
+                           Width="{Binding BreakerImageSize}" Height="{Binding BreakerImageSize}" />
+                    <Viewbox Grid.Column="1" Stretch="Uniform" Margin="6,2">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}" TextAlignment="Center"
+                                       FontFamily="Tahoma" Foreground="Black" />
+                            <TextBlock Text="{Binding BreakerLabel}" TextAlignment="Center"
+                                       FontSize="9" Foreground="DarkRed" />
+                        </StackPanel>
+                    </Viewbox>
+                </Grid>
+
+                <Viewbox Grid.Row="1" Stretch="Uniform" MaxHeight="22"
+                         IsVisible="{Binding ServerNameVisible}" Margin="2">
+                    <TextBlock Text="{Binding ServerName}" TextAlignment="Center" Foreground="WhiteSmoke" />
+                </Viewbox>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+</ResourceDictionary>

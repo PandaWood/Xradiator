@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:Xradiator.Converters;assembly=Xradiator">
+
+    <conv:StateToBackgroundConverter x:Key="StateToBackground" />
+    <conv:BuildNameToMessageConverter x:Key="NameToMessage" />
+
+    <!-- auto rows/cols: tiles fill the whole area as a grid -->
+    <ItemsPanelTemplate x:Key="SkinItemsPanel">
+        <UniformGrid />
+    </ItemsPanelTemplate>
+
+    <DataTemplate x:Key="SkinTemplate">
+        <Border BorderBrush="Black" BorderThickness="0.5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="{Binding CurrentState, Converter={StaticResource StateToBackground}}">
+            <Grid RowDefinitions="*,Auto">
+                <Viewbox Grid.Row="0" Stretch="Uniform" Margin="6">
+                    <TextBlock TextAlignment="Center" FontFamily="Tahoma" Foreground="Black">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource NameToMessage}">
+                                <Binding Path="Name" />
+                                <Binding Path="CurrentMessage" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Viewbox>
+
+                <Viewbox Grid.Row="1" Stretch="Uniform" MaxHeight="22"
+                         IsVisible="{Binding ServerNameVisible}" Margin="2">
+                    <TextBlock Text="{Binding ServerName}" TextAlignment="Center" Foreground="WhiteSmoke" />
+                </Viewbox>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,105 @@
+using System;
+using Avalonia.Threading;
+using Xradiator.Config;
+using Xradiator.Views;
+
+namespace Xradiator.Model
+{
+	public interface ICountdownTimer
+	{
+		void Start();
+		void Stop();
+		void SwitchOn();
+		void SwitchOff();
+		void Execute();
+		DateTime Reset();
+		bool IsSwitchedOn { get; }
+		TimeSpan PollFrequency { set; }
+	}
+
+	public class CountdownTimer : ICountdownTimer
+	{
+		static readonly TimeSpan OneSecond = new TimeSpan(0, 0, 1);
+
+		bool _isSwitchedOn;
+		DateTime _nextRefresh;
+		readonly IXradiatorView _view;
+		readonly DispatcherTimer _countdownTimer;
+		IDateTimeNow _date = new DateTimeNow();
+		public TimeSpan PollFrequency { private get; set; }
+
+		public IDateTimeNow Date
+		{
+			set
+			{
+				_date = value;
+				Reset();
+			}
+		}
+
+		public bool IsSwitchedOn => _isSwitchedOn;
+
+		public CountdownTimer(IConfigSettings configSettings, IXradiatorView view)
+		{
+			_view = view;
+			_isSwitchedOn = configSettings.ShowCountdown;
+			PollFrequency = configSettings.PollFrequencyTimeSpan;
+
+			_countdownTimer = new DispatcherTimer { Interval = OneSecond };
+			_countdownTimer.Tick += CountdownTimer_Tick;
+			Reset();
+		}
+
+		void CountdownTimer_Tick(object sender, EventArgs e)
+		{
+			Execute();
+		}
+
+		public void Start()
+		{
+			if (IsSwitchedOn)
+			{
+				_countdownTimer.Start();
+			}
+		}
+
+		public void Stop()
+		{
+			if (IsSwitchedOn)
+			{
+				_countdownTimer.Stop();
+			}
+		}
+
+		public DateTime Reset()
+		{
+			return _nextRefresh = _date.Now + PollFrequency;
+		}
+
+		public DateTime CalculateNext()
+		{
+			return _nextRefresh = _nextRefresh < _date.Now ? Reset() : _nextRefresh;
+		}
+
+		public void Execute()
+		{
+			var remaining = CalculateTimeToGo();
+			_view.UpdateCountdownTimer(remaining);
+		}
+
+		public TimeSpan CalculateTimeToGo()
+		{
+			return CalculateNext() - _date.Now;
+		}
+
+		public void SwitchOff()
+		{
+			_isSwitchedOn = false;
+		}
+
+		public void SwitchOn()
+		{
+			_isSwitchedOn = true;
+		}
+	}
+}

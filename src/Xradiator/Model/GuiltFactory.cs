@@ -1,0 +1,33 @@
+using System;
+using Xradiator.Config;
+
+namespace Xradiator.Model
+{
+	// ReSharper disable MemberCanBeMadeStatic.Global
+	/// <summary>
+	/// GuiltFactory determines the BuildBusterStrategy given the GuiltStrategyType 
+	/// Seems overkill, but still reads better than the code it replaced
+	/// There is no interface IGuiltFactory - really, just to avoid even worse overkill
+	/// </summary>
+	public class GuiltFactory
+	{
+		public BuildBusterStrategy Get(GuiltStrategyType guiltType)
+		{
+			switch(guiltType)
+			{
+				case GuiltStrategyType.First:
+					return new FirstGuiltStrategy();
+
+				case GuiltStrategyType.Last:
+					return new LastGuiltStrategy();
+				default:
+					throw new ArgumentOutOfRangeException(nameof(guiltType), guiltType, null);
+			}
+
+			throw new UnknownStrategyTypeException();
+		}
+	}
+	// ReSharper restore MemberCanBeMadeStatic.Global
+
+	public class UnknownStrategyTypeException : Exception {}
+}

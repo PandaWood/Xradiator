@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:Xradiator.Converters"
+        x:Class="Xradiator.Views.SettingsWindow"
+        Title="Settings"
+        Icon="/Images/StackedIcon.png"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        CanResize="True"
+        Width="520">
+
+    <Window.Resources>
+        <conv:SecondsToTimeConverter x:Key="TimeConverter" />
+    </Window.Resources>
+
+    <Border Padding="12" BorderBrush="Black" BorderThickness="2">
+        <StackPanel Spacing="6">
+
+            <TextBlock Text="Xradiator Settings" FontSize="18" FontWeight="Bold"
+                       Foreground="White" Background="#333333" Padding="6" Margin="0,0,0,8" />
+
+            <Grid ColumnDefinitions="120,*" RowDefinitions="Auto">
+                <TextBlock Grid.Column="0" Text="URL" VerticalAlignment="Center" />
+                <TextBox Grid.Column="1" Name="urlTextBox" Text="{Binding URL}"
+                         IsReadOnly="{Binding IsMultiView}" />
+            </Grid>
+
+            <Expander Header="Filters" IsExpanded="False">
+                <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto" Margin="0,4,0,0">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Project RegEx" VerticalAlignment="Center" />
+                    <TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding ProjectNameRegEx}" IsReadOnly="{Binding IsMultiView}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Category RegEx" VerticalAlignment="Center" />
+                    <TextBox  Grid.Row="1" Grid.Column="1" Text="{Binding CategoryRegEx}" IsReadOnly="{Binding IsMultiView}" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Server RegEx" VerticalAlignment="Center" />
+                    <TextBox  Grid.Row="2" Grid.Column="1" Text="{Binding ServerNameRegEx}" IsReadOnly="{Binding IsMultiView}" />
+                </Grid>
+            </Expander>
+
+            <TextBlock Text="Poll Interval" />
+            <TextBlock Foreground="CornflowerBlue"
+                       Text="{Binding #pollIntervalSlider.Value, Converter={StaticResource TimeConverter}}" />
+            <Slider Name="pollIntervalSlider" Minimum="15" Maximum="600"
+                    SmallChange="5" LargeChange="30" Value="{Binding PollFrequency}" />
+
+            <CheckBox Content="Show countdown to next refresh" IsChecked="{Binding ShowCountdown}" />
+
+            <Grid ColumnDefinitions="Auto,80,*" RowDefinitions="Auto,Auto,Auto">
+                <CheckBox Grid.Row="0" Grid.Column="0" Content="Play Sounds" IsChecked="{Binding PlaySounds}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Broken" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBox  Grid.Row="1" Grid.Column="2" Text="{Binding BrokenBuildSound}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Fixed" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBox  Grid.Row="2" Grid.Column="2" Text="{Binding FixedBuildSound}" />
+            </Grid>
+
+            <Grid ColumnDefinitions="120,*" RowDefinitions="Auto">
+                <TextBlock Grid.Column="0" Text="Skin" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" Name="skinCombo" SelectedItem="{Binding SkinName}"
+                          IsEnabled="{Binding IsOneView}" HorizontalAlignment="Stretch" />
+            </Grid>
+
+            <TextBlock Text="MultiViews are configured - URL/Filters/Skin are readonly"
+                       Foreground="OrangeRed" IsVisible="{Binding IsMultiView}" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,8,0,0">
+                <Button Name="saveButton" Content="Save" Width="80" Click="Save_Click" IsDefault="True" />
+                <Button Name="cancelButton" Content="Cancel" Width="80" Click="Cancel_Click" />
+            </StackPanel>
+
+        </StackPanel>
+    </Border>
+</Window>

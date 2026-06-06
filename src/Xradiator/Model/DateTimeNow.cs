@@ -1,0 +1,19 @@
+using System;
+
+namespace Xradiator.Model
+{
+	public interface IDateTimeNow
+	{
+		DateTime Now { get; set; }
+	}
+
+	// a class just used for mocking out calls to DateTime
+	public class DateTimeNow : IDateTimeNow
+	{
+		public DateTime Now
+		{
+			get => DateTime.Now;
+			set {  }
+		}
+	}
+}

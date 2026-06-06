@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Xradiator.Tests/Xradiator.Tests.csproj" />
+    <Project Path="src/Xradiator/Xradiator.csproj" />
+  </Folder>
+</Solution>

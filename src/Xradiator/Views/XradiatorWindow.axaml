@@ -1,0 +1,92 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Xradiator.Views.XradiatorWindow"
+        Title="Xradiator"
+        Icon="/Images/StackedIcon.png"
+        WindowStartupLocation="CenterScreen"
+        Background="Black"
+        Width="600" Height="400">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- content area (only one of these three is visible at a time) -->
+
+        <!-- normal projects wall: bars fill the whole area -->
+        <ItemsControl Grid.Row="0"
+                      IsVisible="{Binding ShowProjects}"
+                      ItemsSource="{Binding Projects}"
+                      ItemTemplate="{DynamicResource SkinTemplate}"
+                      ItemsPanel="{DynamicResource SkinItemsPanel}"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+        <!-- all OK: smiley -->
+        <Grid Grid.Row="0" IsVisible="{Binding ShowAllOK}" RowDefinitions="*,Auto">
+            <Image Grid.Row="0" Source="/Images/smiley.jpg" Stretch="Uniform" />
+            <Viewbox Grid.Row="1" Stretch="Uniform" MaxHeight="80">
+                <TextBlock Text="{Binding ViewName}" FontWeight="Bold">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                            <GradientStop Color="OrangeRed" Offset="0.0" />
+                            <GradientStop Color="Orange" Offset="0.40" />
+                            <GradientStop Color="LightGreen" Offset="0.60" />
+                            <GradientStop Color="Orange" Offset="0.80" />
+                            <GradientStop Color="OrangeRed" Offset="1.00" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Viewbox>
+        </Grid>
+
+        <!-- out of date projects -->
+        <Grid Grid.Row="0" IsVisible="{Binding ShowOutOfDateProjects}" RowDefinitions="*,Auto">
+            <ItemsControl Grid.Row="0"
+                          ItemsSource="{Binding Projects}"
+                          ItemTemplate="{DynamicResource SkinTemplate}"
+                          ItemsPanel="{DynamicResource SkinItemsPanel}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            <Viewbox Grid.Row="1" Stretch="Uniform" MaxHeight="80">
+                <TextBlock Text="{Binding ViewName}" FontWeight="Bold">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+                            <GradientStop Color="OrangeRed" Offset="0.0" />
+                            <GradientStop Color="Orange" Offset="0.40" />
+                            <GradientStop Color="LightGreen" Offset="0.60" />
+                            <GradientStop Color="Orange" Offset="0.80" />
+                            <GradientStop Color="OrangeRed" Offset="1.00" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Viewbox>
+        </Grid>
+
+        <!-- bottom status bar -->
+        <Border Grid.Row="1">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto">
+
+                <TextBlock Name="titleText" Text="Xradiator"
+                           Grid.Column="0"
+                           FontSize="18" Padding="5"
+                           FontFamily="Constantia,Lucida"
+                           Foreground="White" />
+
+                <TextBlock Name="countdownText" Text="00:00" HorizontalAlignment="Center"
+                           Grid.Column="1"
+                           FontFamily="Verdana" FontSize="22"
+                           Foreground="Snow" Opacity="0.5" />
+
+                <ProgressBar Name="progressBar"
+                             Grid.Column="1"
+                             IsIndeterminate="True" IsVisible="False" Opacity="0.5" />
+
+                <TextBlock Grid.Column="2" Text="{Binding AmountHeader}"
+                           Foreground="LightBlue" VerticalAlignment="Center" Margin="4" />
+
+                <TextBlock Grid.Column="3" Name="settingsLink" Text="Settings (F12)"
+                           VerticalAlignment="Center" Padding="2"
+                           FontFamily="Tahoma" FontSize="12" Foreground="LightGray"
+                           Cursor="Hand" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
