@@ -5,8 +5,6 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>disable</Nullable>
     <LangVersion>latest</LangVersion>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     <RootNamespace>Xradiator</RootNamespace>
     <AssemblyName>Xradiator</AssemblyName>

@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-latest
+          - rid: osx-x64
+            os: macos-latest
+          - rid: osx-arm64
+            os: macos-latest
+          - rid: linux-x64
+            os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        run: |
+          dotnet publish src/Xradiator/Xradiator.csproj \
+            -c Release \
+            -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -o publish/${{ matrix.rid }}
+
+      - name: Zip artifact
+        shell: bash
+        run: |
+          cd publish/${{ matrix.rid }}
+          if [[ "${{ matrix.rid }}" == win-* ]]; then
+            zip -r ../../Xradiator-${{ github.ref_name }}-${{ matrix.rid }}.zip .
+          else
+            tar -czf ../../Xradiator-${{ github.ref_name }}-${{ matrix.rid }}.tar.gz .
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Xradiator-${{ github.ref_name }}-${{ matrix.rid }}
+          path: Xradiator-${{ github.ref_name }}-${{ matrix.rid }}.*
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: artifacts
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true

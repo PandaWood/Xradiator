@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Reflection;
 using Xradiator.Extensions;
 using log4net;
@@ -135,7 +136,10 @@ namespace Xradiator.Config
 
 		private static Configuration OpenExeConfiguration()
 		{
-			return ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+			var name = Assembly.GetExecutingAssembly().GetName().Name;
+			var configFile = Path.Combine(AppContext.BaseDirectory, name + ".dll.config");
+			var map = new ExeConfigurationFileMap { ExeConfigFilename = configFile };
+			return ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
 		}
 
 		public void Log()

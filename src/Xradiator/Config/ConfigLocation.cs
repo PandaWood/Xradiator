@@ -1,9 +1,10 @@
+using System;
 using System.IO;
 using System.Reflection;
 
 namespace Xradiator.Config
 {
-	public interface IConfigLocation 
+	public interface IConfigLocation
 	{
 		string FileName { get; }
 	}
@@ -12,7 +13,11 @@ namespace Xradiator.Config
 	{
 		public string FileName
 		{
-			get { return Assembly.GetExecutingAssembly().Location + ".config"; }
+			get
+			{
+				var name = Assembly.GetExecutingAssembly().GetName().Name;
+				return Path.Combine(AppContext.BaseDirectory, name + ".dll.config");
+			}
 		}
 	}
 
@@ -25,7 +30,7 @@ namespace Xradiator.Config
 	{
 		public string DirectoryName
 		{
-			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
+			get { return AppContext.BaseDirectory; }
 		}
 	}
 }

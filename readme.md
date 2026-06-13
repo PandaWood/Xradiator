@@ -26,6 +26,28 @@ Shows an image alongside a broken project (based on the breaker's username). Onl
 | Yellow | Building |
 | White | Unknown |
 
+### Releases
+
+Pre-built binaries for Windows, macOS, and Linux are attached to each [GitHub release](../../releases).
+
+| Download | Platform |
+|----------|----------|
+| `Xradiator-*-win-x64.zip` | Windows (64-bit) |
+| `Xradiator-*-osx-x64.tar.gz` | macOS (Intel) |
+| `Xradiator-*-osx-arm64.tar.gz` | macOS (Apple Silicon) |
+| `Xradiator-*-linux-x64.tar.gz` | Linux (64-bit) |
+
+Each archive is self-contained — no .NET installation required. Extract and run the `Xradiator` executable (or `Xradiator.exe` on Windows).
+
+**To cut a release**, push a version tag and GitHub Actions will build and publish all four targets automatically:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+To build locally for all platforms, run `./publish.sh` from the repo root. Output lands in `publish/<rid>/`.
+
 ### Config documentation
 
 1. __Polling Frequency__ - In seconds. Default is 30
